@@ -49,7 +49,8 @@ void DxOverlay::setGeometry(const QRect& region)
 
 		if (item->alignment() & Qt::AlignLeft)
 		{
-			item->m_Geom.setLeft(0);
+			int left = item->m_margin.left();
+			item->m_Geom.setLeft(left);
 		}
 		else if (item->alignment() & Qt::AlignHCenter)
 		{
@@ -58,7 +59,7 @@ void DxOverlay::setGeometry(const QRect& region)
 		}
 		else if (item->alignment() & Qt::AlignRight)
 		{
-			int left = region.width() - hint.width();
+			int left = region.width() - hint.width() - item->m_margin.right();
 			item->m_Geom.setLeft(left);
 		}
 		item->m_Geom.setRight(item->m_Geom.left() + hint.width());
@@ -66,7 +67,8 @@ void DxOverlay::setGeometry(const QRect& region)
 
 		if (item->alignment() & Qt::AlignTop)
 		{
-			item->m_Geom.setTop(0);
+			int top = item->m_margin.top();
+			item->m_Geom.setTop(top);
 		}
 		else if (item->alignment() & Qt::AlignVCenter)
 		{
@@ -75,7 +77,7 @@ void DxOverlay::setGeometry(const QRect& region)
 		}
 		else if (item->alignment() & Qt::AlignBottom)
 		{
-			int top = region.height() - hint.height();
+			int top = region.height() - hint.height() - item->m_margin.bottom();
 			item->m_Geom.setTop(top);
 		}
 		item->m_Geom.setBottom(item->m_Geom.top() + hint.height());
@@ -95,10 +97,10 @@ void DxOverlay::setGeometry(const QRect& region)
 void DxOverlay::addWidget(QWidget* w)
 {
 	addChildWidget(w);
-	addWidget(w, Qt::AlignCenter);
+	addWidget(w, Qt::AlignCenter, DxMargin());
 }
 
-void DxOverlay::addWidget(QWidget* w, Qt::Alignment alig)
+void DxOverlay::addWidget(QWidget* w, Qt::Alignment alig, DxMargin margin)
 {
 	DxOverlayItem* pitem = CreateItem(w, alig);
 	if (pitem)
@@ -108,13 +110,22 @@ void DxOverlay::addWidget(QWidget* w, Qt::Alignment alig)
 	}
 }
 
-DxOverlayItem* DxOverlay::CreateItem(QWidget* w, Qt::Alignment alig)
+DxOverlayItem* DxOverlay::CreateItem(QWidget* w, Qt::Alignment alig, DxMargin margin)
 {
-	DxOverlayItem* pitem = new DxOverlayItem(w, alig);
+	DxOverlayItem* pitem = new DxOverlayItem(w, alig, margin);
 	return pitem;
 }
 
-DxOverlayItem::DxOverlayItem(QWidget* widget, Qt::Alignment alig) : QWidgetItem(widget)
+DxOverlayItem::DxOverlayItem(QWidget* widget, Qt::Alignment alig, DxMargin margin) : QWidgetItem(widget)
 {
 	align = alig;
+	m_margin = margin;
+}
+
+DxMargin::DxMargin(int left, int top, int right, int bottom)
+{
+	setLeft(left);
+	setTop(top);
+	setRight(right);
+	setBottom(bottom);
 }
