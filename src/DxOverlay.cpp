@@ -102,7 +102,7 @@ void DxOverlay::addWidget(QWidget* w)
 
 void DxOverlay::addWidget(QWidget* w, Qt::Alignment alig, DxMargin margin)
 {
-	DxOverlayItem* pitem = CreateItem(w, alig);
+	DxOverlayItem* pitem = CreateItem(w, alig, margin);
 	if (pitem)
 	{
 		m_items.push_back(pitem);

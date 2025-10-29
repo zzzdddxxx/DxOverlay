@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	DxOverlay* overlay = new DxOverlay(&w);
 
 	QPushButton* ww = new QPushButton(&w);
-	overlay->addWidget(ww, Qt::AlignLeft | Qt::AlignTop);
+	overlay->addWidget(ww, Qt::AlignLeft | Qt::AlignTop, DxMargin(100));
 	QPushButton* ww3 = new QPushButton(&w);
 	ww3->setMinimumSize(300, 300);
 	overlay->addWidget(ww3, Qt::AlignCenter);
